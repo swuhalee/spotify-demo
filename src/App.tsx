@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router';
-import Progress from './common/components/Progress/Progress';
+import PageLoader from './common/components/PageLoader/PageLoader';
 
 const AppLayout = React.lazy(() => import('./layout/AppLayout'));
 const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
@@ -18,7 +18,7 @@ const PlaylistPage = React.lazy(() => import('./pages/PlaylistPage/PlaylistPage'
 // 4. (mobile) playlist page: /playlist
 function App() {
   return (
-    <Suspense fallback={<Progress />} >
+    <Suspense fallback={<PageLoader />} >
       <Routes>
         <Route path="/" element={<AppLayout />} >
           <Route index element={<HomePage />} />
