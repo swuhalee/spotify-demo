@@ -22,7 +22,9 @@ const NewReleases = () => {
       )}
 
       {isError && (
-        <ErrorMessage errorMessage={error.message} />
+        <div style={{ marginTop: '8px' }}>
+          <ErrorMessage errorMessage={error.message} />
+        </div>
       )}
 
       {!isLoading && !isError && (
