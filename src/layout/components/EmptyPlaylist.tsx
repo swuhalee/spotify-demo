@@ -1,5 +1,5 @@
 import { Button, Typography } from '@mui/material'
-import { ContentBox } from '../../styles/ContentBox.styles';
+import { ContentBox } from '../styles/ContentBox.styles';
 
 const EmptyPlaylist = () => {
     return (
