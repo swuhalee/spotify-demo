@@ -6,17 +6,22 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from 'react-router';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from './theme';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const root = ReactDOM.createRoot(
   document.getElementById('content') as HTMLElement
 );
+const queryClient = new QueryClient();
 root.render(
   <React.StrictMode>
     <BrowserRouter>
       <ThemeProvider theme={theme}>
         {/* 브라우저 별 style 초기값을 동일화해줌 */}
         <CssBaseline />
-        <App />
+
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
       </ThemeProvider>
     </BrowserRouter>
   </React.StrictMode>

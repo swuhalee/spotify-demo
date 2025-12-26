@@ -1,9 +1,9 @@
-import React from 'react'
+import NewReleases from "./components/NewReleases"
 
 const HomePage = () => {
   return (
     <div>
-      Home Page
+      <NewReleases />
     </div>
   )
 }

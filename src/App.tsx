@@ -1,7 +1,7 @@
 import React, { Suspense } from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router';
-import PageLoader from './common/components/PageLoader/PageLoader';
+import PageLoader from './common/components/PageLoader';
 
 const AppLayout = React.lazy(() => import('./layout/AppLayout'));
 const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));

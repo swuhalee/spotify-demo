@@ -1,9 +1,10 @@
 import { Outlet } from 'react-router'
-import LibraryHead from './components/LibraryHead/LibraryHead';
-import Library from './components/Library/Library';
+import LibraryHead from './components/LibraryHead';
+import Library from './components/Library';
 import { ContentBox } from './styles/ContentBox.styles';
-import Navigation from './components/Navigation/Navigation';
+import NavList from './components/NavList';
 import { styled } from '@mui/material';
+import Navbar from './components/Navbar';
 
 export const Layout = styled("div")({
     display: "flex",
@@ -28,14 +29,17 @@ const AppLayout = () => {
         <Layout>
             <Sidebar>
                 <ContentBox>
-                    <Navigation />
+                    <NavList />
                 </ContentBox>
                 <ContentBox sx={{ height: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
                     <LibraryHead />
                     <Library />
                 </ContentBox>
             </Sidebar>
-            <Outlet />
+            <ContentBox sx={{ marginLeft: '8px' }}>
+                <Navbar />
+                <Outlet />
+            </ContentBox>
         </Layout>
     )
 }
