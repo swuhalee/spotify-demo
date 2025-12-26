@@ -1,0 +1,1 @@
+export const SPOTIFY_BASE_URL = process.env.SPOFITY_BASE_URL;
