@@ -7,10 +7,11 @@ import CardSkeleton from '../../../common/components/CardSkeleton';
 const NewReleases = () => {
   const { data, isLoading, isError, error } = useGetNewReleases();
 
-  if (isLoading) {
-    return (
-      <div>
-        <Typography variant="h1" paddingTop="8px">New Released Albums</Typography>
+  return (
+    <div>
+      <Typography variant="h1" paddingTop="8px">New Released Albums</Typography>
+      
+      {isLoading && (
         <Grid container spacing={2} marginTop="8px">
           {[...Array(6)].map((_, index) => (
             <Grid key={index} size={{ xs: 6, sm: 4, md: 2 }} paddingTop="16px">
@@ -18,27 +19,26 @@ const NewReleases = () => {
             </Grid>
           ))}
         </Grid>
-      </div>
-    );
-  }
+      )}
 
-  if (isError) {
-    return <ErrorMessage errorMessage={error.message} />;
-  }
+      {isError && (
+        <ErrorMessage errorMessage={error.message} />
+      )}
 
-  return (
-    <div>
-      <Typography variant="h1" paddingTop="8px">New Released Albums</Typography>
-      {data && data?.albums.items.length > 0 ? (
-        <Grid container spacing={2} marginTop="8px">
-          {data.albums.items.map((album) => (
-            <Grid key={album.id} size={{ xs: 6, sm: 4, md: 2 }} paddingTop="16px">
-              <Card name={album.name} image={album.images[0]?.url} artistName={album.artists.map(artist => artist.name).filter((name): name is string => Boolean(name))} />
+      {!isLoading && !isError && (
+        <>
+          {data && data?.albums.items.length > 0 ? (
+            <Grid container spacing={2} marginTop="8px">
+              {data.albums.items.map((album) => (
+                <Grid key={album.id} size={{ xs: 6, sm: 4, md: 2 }} paddingTop="16px">
+                  <Card name={album.name} image={album.images[0]?.url} artistName={album.artists.map(artist => artist.name).filter((name): name is string => Boolean(name))} />
+                </Grid>
+              ))}
             </Grid>
-          ))}
-        </Grid>
-      ) : (
-        <Typography variant="h2">No new releases available.</Typography>
+          ) : (
+            <Typography variant="h2">No new releases available.</Typography>
+          )}
+        </>
       )}
     </div>
   )
