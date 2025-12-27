@@ -1,7 +1,9 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import './App.css';
 import { Route, Routes } from 'react-router';
 import PageLoader from './common/components/PageLoader';
+import useExchangeToken from './hooks/useExchangeToken';
+import { exchangeToken } from './apis/authApi';
 
 const AppLayout = React.lazy(() => import('./layout/AppLayout'));
 const HomePage = React.lazy(() => import('./pages/HomePage/HomePage'));
@@ -17,6 +19,17 @@ const PlaylistPage = React.lazy(() => import('./pages/PlaylistPage/PlaylistPage'
 // 3. playlist detailpage: /playlist/:id
 // 4. (mobile) playlist page: /playlist
 function App() {
+  const urlParams = new URLSearchParams(window.location.search);
+  let code = urlParams.get('code');
+  const codeVerifier = localStorage.getItem('code_verifier');
+  const { mutate: exchangeToken } = useExchangeToken();
+
+  useEffect(() => {
+    if (code && codeVerifier) {
+      exchangeToken({ code, codeVerifier });
+    }
+  }, [code, codeVerifier, exchangeToken]);
+
   return (
     <Suspense fallback={<PageLoader />} >
       <Routes>
