@@ -31,3 +31,9 @@ export const getSpotifyAuthUrl = async () => {
         window.location.href = authUrl.toString();
     }
 }
+
+export const logout = () => {
+    localStorage.removeItem('access_token');
+    localStorage.removeItem('code_verifier');
+    window.location.href = '/';
+}
