@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Avatar, Box, IconButton, Menu, MenuItem, ListItemIcon, Tooltip, styled } from '@mui/material'
+import { Avatar, Box, IconButton, Menu, MenuItem, ListItemIcon, Tooltip, styled, Skeleton } from '@mui/material'
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useQueryClient } from '@tanstack/react-query';
 import LoginButton from '../../common/components/LoginButton'
@@ -58,8 +58,13 @@ const Navbar = () => {
   };
 
   if (isLoading) {
-    // 두 컴포넌트의 모습이 다르기 때문에 loading 상태일 때는 아무것도 보여주지 않음
-    return null;
+    return (
+      <Box display="flex" justifyContent="flex-end" alignItems="center" height="64px">
+        <IconButton size="small" disabled>
+          <Skeleton variant="circular" width={32} height={32} />
+        </IconButton>
+      </Box>
+    );
   }
 
   return (
