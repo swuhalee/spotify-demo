@@ -36,3 +36,16 @@ export interface ExplicitContent {
   filter_enabled: boolean;
   filter_locked: boolean;
 }
+
+/**
+ * 플레이리스트 소유자 정보
+ */
+export interface PlaylistOwner {
+  external_urls: ExternalUrls;
+  followers?: Followers;
+  href: string;
+  id: string;
+  type: "user";
+  uri: string;
+  display_name?: string | null;
+}
