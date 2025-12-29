@@ -1,3 +1,4 @@
+import { ApiResponse } from "./apiResponse";
 import { Artist } from "./artist";
 import { ExternalUrls, ImageObject, Restrictions } from "./commonType";
 
@@ -5,20 +6,7 @@ import { ExternalUrls, ImageObject, Restrictions } from "./commonType";
  * getNewRealeases 응답 인터페이스 (Spotify API)
  */
 export interface GetNewReleasesResponse {
-  albums: PagingObject<SimplifiedAlbumObject>;
-}
-
-/**
- * 페이징 처리를 위한 공통 객체
- */
-interface PagingObject<T> {
-  href: string;
-  items: T[];
-  limit: number;
-  next: string | null;
-  offset: number;
-  previous: string | null;
-  total: number;
+  albums: ApiResponse<SimplifiedAlbumObject>;
 }
 
 /**

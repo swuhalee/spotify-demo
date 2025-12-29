@@ -1,10 +1,41 @@
-import EmptyPlaylist from "./EmptyPlaylist"
+import { Box } from "@mui/material";
+import ErrorMessage from "../../common/components/ErrorMessage";
+import useGetCurrentUserPlaylists from "../../hooks/useGetCurrentUserPlaylists";
+import EmptyPlaylist from "./EmptyPlaylist";
+import Playlist from "./Playlist";
+import PlaylistSkeleton from './PlaylistSkeleton';
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
 
 const Library = () => {
-    // TODO: playlist가 있으면 다른 컴포넌트가 와야 하기에 Library 컴포넌트 작성 필요
+    const { ref, inView } = useInView();
+    const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetCurrentUserPlaylists({ limit: 20, offset: 0 });
+
+    useEffect(() => {
+        if (inView && hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+        }
+    }, [inView]);
+
+    if (isLoading) {
+        return (
+            <PlaylistSkeleton />
+        );
+    }
+
     return (
-        <EmptyPlaylist />
-    )
+        <>
+            {!data || data?.pages[0].total === 0
+                ? <EmptyPlaylist />
+                : <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto', overflowX: 'hidden', minHeight: 0 }}>
+                    {data?.pages.map((page, index) => (
+                        <Playlist key={index} playlists={page.items} />
+                    ))}
+                    <div ref={ref} />
+                  </Box>
+            }
+        </>
+    );
 }
 
 export default Library

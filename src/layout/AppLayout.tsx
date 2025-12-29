@@ -31,7 +31,7 @@ const AppLayout = () => {
                 <ContentBox>
                     <NavList />
                 </ContentBox>
-                <ContentBox sx={{ height: "100%", display: "flex", flexDirection: "column", gap: "8px" }}>
+                <ContentBox sx={{ height: "100%", display: "flex", flexDirection: "column", gap: "8px", overflow: "hidden" }}>
                     <LibraryHead />
                     <Library />
                 </ContentBox>
