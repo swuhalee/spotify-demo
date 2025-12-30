@@ -24,9 +24,9 @@ const PlaylistDetailPage = () => {
         <Grid
           size={{ xs: 12, md: 2 }}
           sx={{
-            display: { xs: "flex", sm: "block" },
-            justifyContent: { xs: "center", sm: "flex-start" },
-            width: { xs: "100%", sm: "auto" },
+            display: { xs: "flex", md: "block" },
+            justifyContent: { xs: "center", md: "flex-start" },
+            width: { xs: "100%", md: "auto" },
           }}
         >
           {playlist?.images ? (
