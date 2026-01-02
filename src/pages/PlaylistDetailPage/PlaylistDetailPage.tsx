@@ -1,12 +1,23 @@
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
 import useGetPlaylist from '../../hooks/useGetPlaylist';
 import { Navigate, useParams } from 'react-router';
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import useGetPlaylistItems from '../../hooks/useGetPlaylistItems';
+import DesktopPlaylistItem from './components/DesktopPlaylistItem';
+import { PAGE_LIMIT } from '../../configs/commonConfig';
 
 const PlaylistDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   if (id === undefined) return <Navigate to="/" />;
   const { data: playlist } = useGetPlaylist({ playlist_id: id, });
+  const {
+    data: playlistItems,
+    isLoading: isPlaylistItemsLoading,
+    error: playlistItemsError,
+    hasNextPage,
+    isFetchingNextPage,
+    fetchNextPage
+  } = useGetPlaylistItems({ playlist_id: id, limit: PAGE_LIMIT, offset: 0 });
 
   return (
     <div>
@@ -110,6 +121,31 @@ const PlaylistDetailPage = () => {
           </Box>
         </Grid>
       </Grid>
+      {playlist?.tracks?.total === 0
+        ? <Typography>No songs in this playlist</Typography>
+        : <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>#</TableCell>
+              <TableCell>Title</TableCell>
+              <TableCell>Album</TableCell>
+              <TableCell>Date added</TableCell>
+              <TableCell>Duration</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {playlistItems?.pages.map((page, pageIndex) => page.items.map((item, itemIndex) => {
+              return (
+                <DesktopPlaylistItem
+                  key={pageIndex * PAGE_LIMIT + itemIndex + 1} 
+                  index={pageIndex * PAGE_LIMIT + itemIndex + 1} 
+                  item={item}
+                />
+              );
+            }))}
+          </TableBody>
+        </Table>
+      }
     </div>
   )
 }
