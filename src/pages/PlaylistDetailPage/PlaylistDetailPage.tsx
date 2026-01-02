@@ -1,152 +1,76 @@
-import { Box, Grid, Table, TableBody, TableCell, TableHead, TableRow, Typography } from '@mui/material';
+import { Box, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import useGetPlaylist from '../../hooks/useGetPlaylist';
 import { Navigate, useParams } from 'react-router';
-import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import useGetPlaylistItems from '../../hooks/useGetPlaylistItems';
 import DesktopPlaylistItem from './components/DesktopPlaylistItem';
+import PlaylistHeader from './components/PlaylistHeader';
 import { PAGE_LIMIT } from '../../configs/commonConfig';
+import { useInView } from 'react-intersection-observer';
+import { useEffect } from 'react';
 
 const PlaylistDetailPage = () => {
+  const { ref, inView } = useInView();
   const { id } = useParams<{ id: string }>();
   if (id === undefined) return <Navigate to="/" />;
   const { data: playlist } = useGetPlaylist({ playlist_id: id, });
-  const {
-    data: playlistItems,
-    isLoading: isPlaylistItemsLoading,
-    error: playlistItemsError,
-    hasNextPage,
-    isFetchingNextPage,
-    fetchNextPage
-  } = useGetPlaylistItems({ playlist_id: id, limit: PAGE_LIMIT, offset: 0 });
+  const { data: playlistItems, isLoading: isPlaylistItemsLoading, error: playlistItemsError, hasNextPage, isFetchingNextPage, fetchNextPage } = useGetPlaylistItems({ playlist_id: id, limit: PAGE_LIMIT, offset: 0 });
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView]);
 
   return (
-    <div>
-      <Grid
-        container
-        spacing={{ xs: 2, md: 1 }}
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          background: "linear-gradient(transparent 0, rgba(0, 0, 0, .5) 100%)",
-          borderRadius: "16px",
-          padding: "28px",
-        }}
-      >
-        <Grid
-          size={{ xs: 12, md: 2 }}
-          sx={{
-            display: { xs: "flex", md: "block" },
-            justifyContent: { xs: "center", md: "flex-start" },
-            width: { xs: "100%", md: "auto" },
-          }}
-        >
-          {playlist?.images ? (
-            <Box
-              component="img"
-              src={playlist?.images[0].url}
-              alt="playlist_cover.jpg"
-              sx={{
-                borderRadius: "8px",
-                width: { xs: "200px", md: "232px" },
-                height: { xs: "200px", md: "232px" },
-                objectFit: "cover",
-              }}
-            />
-          ) : (
-            <Box
-              sx={{
-                backgroundColor: "#282828",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                borderRadius: "8px",
-                width: { xs: "200px", md: "232px" },
-                height: { xs: "200px", md: "232px" },
-                boxShadow:
-                  "rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px",
-              }}
-            >
-              <MusicNoteIcon fontSize="large" />
-            </Box>
-          )}
-        </Grid>
-        <Grid
-          size={{ xs: 12, md: 10 }}
-          sx={{
-            display: { xs: "flex", md: "block" },
-            alignItems: { xs: "center", md: "flex-start" },
-            justifyContent: { xs: "center", md: "flex-start" },
-          }}
-        >
-          <Box>
-            <Typography
-              variant="h1"
-              color="white"
-              sx={{
-                fontSize: { xs: "1.5rem", md: "3rem" },
-                textAlign: { xs: "center", md: "left" },
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
-              }}
-            >
-              {playlist?.name}
-            </Typography>
-
-            <Box
-              display="flex"
-              alignItems="center"
-              sx={{
-                marginTop: "4px",
-              }}
-            >
-              <img
-                src="https://i.scdn.co/image/ab67757000003b8255c25988a6ac314394d3fbf5"
-                width="20px"
-              />
-              <Typography
-                variant="subtitle1"
-                color="white"
-                ml={1}
-                fontWeight={700}
-                sx={{
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap',
-                }}
-              >
-                {playlist?.owner?.display_name ? playlist?.owner.display_name : "unknown"} • {playlist?.tracks?.total} songs
-              </Typography>
-            </Box>
-          </Box>
-        </Grid>
-      </Grid>
-      {playlist?.tracks?.total === 0
-        ? <Typography>No songs in this playlist</Typography>
-        : <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>#</TableCell>
-              <TableCell>Title</TableCell>
-              <TableCell>Album</TableCell>
-              <TableCell>Date added</TableCell>
-              <TableCell>Duration</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {playlistItems?.pages.map((page, pageIndex) => page.items.map((item, itemIndex) => {
-              return (
-                <DesktopPlaylistItem
-                  key={pageIndex * PAGE_LIMIT + itemIndex + 1} 
-                  index={pageIndex * PAGE_LIMIT + itemIndex + 1} 
-                  item={item}
-                />
-              );
-            }))}
-          </TableBody>
-        </Table>
-      }
-    </div>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        height: "100%",
+      }}
+    >
+      <PlaylistHeader playlist={playlist} />
+      <Box sx={{ overflow: "hidden", marginTop: "16px" }}>
+        {playlist?.tracks?.total === 0
+          ? <Typography>No songs in this playlist</Typography>
+          : <TableContainer sx={{ height: "100%" }}>
+            <Table stickyHeader>
+              <TableHead>
+                <TableRow>
+                  <TableCell sx={{ backgroundColor: "background.paper" }}>
+                    #
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "background.paper" }}>
+                    Title
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "background.paper" }}>
+                    Album
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "background.paper" }}>
+                    Date added
+                  </TableCell>
+                  <TableCell sx={{ backgroundColor: "background.paper" }}>
+                    Duration
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {playlistItems?.pages.map((page, pageIndex) => page.items.map((item, itemIndex) => {
+                  return (
+                    <DesktopPlaylistItem
+                      key={pageIndex * PAGE_LIMIT + itemIndex + 1}
+                      index={pageIndex * PAGE_LIMIT + itemIndex + 1}
+                      item={item}
+                    />
+                  );
+                }))}
+                <TableRow sx={{ height: "4px" }} ref={ref} />
+              </TableBody>
+            </Table>
+          </TableContainer>
+        }
+      </Box>
+    </Box>
   )
 }
 

@@ -1,5 +1,4 @@
 import { Box } from "@mui/material";
-import ErrorMessage from "../../common/components/ErrorMessage";
 import useGetCurrentUserPlaylists from "../../hooks/useGetCurrentUserPlaylists";
 import EmptyPlaylist from "./EmptyPlaylist";
 import Playlist from "./Playlist";

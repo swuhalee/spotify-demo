@@ -3,7 +3,7 @@ import LibraryHead from './components/LibraryHead';
 import Library from './components/Library';
 import { ContentBox } from './styles/ContentBox.styles';
 import NavList from './components/NavList';
-import { styled } from '@mui/material';
+import { Box, styled } from '@mui/material';
 import Navbar from './components/Navbar';
 
 export const Layout = styled("div")({
@@ -31,14 +31,16 @@ const AppLayout = () => {
                 <ContentBox>
                     <NavList />
                 </ContentBox>
-                <ContentBox sx={{ height: "100%", display: "flex", flexDirection: "column", gap: "8px", overflow: "hidden" }}>
+                <ContentBox sx={{ display: "flex", flexDirection: "column", gap: "8px", overflow: "hidden" }}>
                     <LibraryHead />
                     <Library />
                 </ContentBox>
             </Sidebar>
-            <ContentBox sx={{ marginLeft: '8px' }}>
+            <ContentBox sx={{ marginLeft: '8px', display: 'flex', flexDirection: 'column' }}>
                 <Navbar />
-                <Outlet />
+                <Box sx={{ flex: 1, overflow: 'hidden' }}>
+                    <Outlet />
+                </Box>
             </ContentBox>
         </Layout>
     )
