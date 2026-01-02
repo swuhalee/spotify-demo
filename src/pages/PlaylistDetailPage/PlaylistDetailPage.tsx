@@ -33,7 +33,14 @@ const PlaylistDetailPage = () => {
       <Box sx={{ overflow: "hidden", marginTop: "16px" }}>
         {playlist?.tracks?.total === 0
           ? <Typography>No songs in this playlist</Typography>
-          : <TableContainer sx={{ height: "100%" }}>
+          : <TableContainer sx={{ 
+              height: "100%",
+              "&::-webkit-scrollbar": {
+                display: "none"
+              },
+              scrollbarWidth: "none",
+              msOverflowStyle: "none"
+            }}>
             <Table stickyHeader>
               <TableHead>
                 <TableRow>
