@@ -63,3 +63,14 @@ export interface AddedByUser {
     type: "user";
     uri: string;
 }
+
+export interface CreatePlaylistRequest {
+    name: string;
+    playlist_public?: boolean;
+    collaborative?: boolean;
+    description?: string;
+}
+
+export interface CreatePlaylistResponse extends BasePlaylist {
+    tracks: ApiResponse<BasePlaylistTrackObject<TrackObject | EpisodeObject>>;
+}

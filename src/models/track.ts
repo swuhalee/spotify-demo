@@ -69,6 +69,8 @@ export interface EpisodeObject {
     show: ShowObject;
 }
 
+export type SimplifiedEpisodeObject = Omit<EpisodeObject, 'show'>;
+
 export interface ResumePoint {
     fully_played: boolean;
     resume_position_ms: number;
@@ -97,4 +99,34 @@ export interface ShowObject {
 export interface CopyrightObject {
     text: string;
     type: "C" | "P";
+}
+
+export interface AuthorObject {
+    name: string;
+}
+
+export interface NarratorObject {
+    name: string;
+}
+
+export interface SimplifiedAudiobookObject {
+    authors: AuthorObject[];
+    available_markets: string[];
+    copyrights: CopyrightObject[];
+    description: string;
+    html_description: string;
+    edition?: string;
+    explicit: boolean;
+    external_urls: ExternalUrls;
+    href: string;
+    id: string;
+    images: ImageObject[];
+    languages: string[];
+    media_type: string;
+    name: string;
+    narrators: NarratorObject[];
+    publisher: string;
+    type: "audiobook";
+    uri: string;
+    total_chapters: number;
 }
