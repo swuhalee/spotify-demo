@@ -1,4 +1,5 @@
 import { TableCell, TableRow } from '@mui/material';
+import { styled } from '@mui/material';
 import { BasePlaylistTrackObject } from '../../../models/playlist'
 import { EpisodeObject, TrackObject } from '../../../models/track'
 
@@ -34,21 +35,25 @@ const DesktopPlaylistItem = ({ index, item }: DesktopPlaylistItemProps) => {
   };
 
   return (
-    <TableRow
-      sx={{
-        '&:last-child td': { borderBottom: 0 },
-        '&:hover': {
-          backgroundColor: 'action.hover',
-        },
-      }}
-    >
-      <TableCell sx={{ borderBottom: 'none' }}>{index}</TableCell>
-      <TableCell sx={{ borderBottom: 'none' }}>{item.track.name || "No name"}</TableCell>
-      <TableCell sx={{ borderBottom: 'none' }}>{isEpisode(item.track) ? "N/A": item.track.album?.name}</TableCell>
-      <TableCell sx={{ borderBottom: 'none' }}>{formatDate(item.added_at)}</TableCell>
-      <TableCell sx={{ borderBottom: 'none' }}>{formatDuration(item.track.duration_ms)}</TableCell>
-    </TableRow>
+    <StyledTableRow>
+      <StyledTableCell>{index}</StyledTableCell>
+      <StyledTableCell>{item.track.name || "No name"}</StyledTableCell>
+      <StyledTableCell>{isEpisode(item.track) ? "N/A": item.track.album?.name}</StyledTableCell>
+      <StyledTableCell>{formatDate(item.added_at)}</StyledTableCell>
+      <StyledTableCell>{formatDuration(item.track.duration_ms)}</StyledTableCell>
+    </StyledTableRow>
   )
 }
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:last-child td': { borderBottom: 0 },
+  '&:hover': {
+    backgroundColor: theme.palette.action.hover,
+  },
+}));
+
+const StyledTableCell = styled(TableCell)({
+  borderBottom: 'none',
+});
 
 export default DesktopPlaylistItem

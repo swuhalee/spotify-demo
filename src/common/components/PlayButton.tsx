@@ -1,21 +1,4 @@
-
 import { styled } from "@mui/material";
-
-const PlayButtonContainer = styled("button")(({ theme }) => ({
-    backgroundColor: theme.palette.primary.main,
-    border: "none",
-    borderRadius: "50%",
-    width: "50px",
-    height: "50px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    cursor: "pointer",
-    boxShadow: "rgba(0, 0, 0, 0.3) 0px 8px 8px 0px",
-    "&:focus": {
-        outline: "none",
-    },
-}));
 
 const PlayButton = () => {
     return (
@@ -32,5 +15,21 @@ const PlayButton = () => {
         </PlayButtonContainer>
     );
 };
+
+const PlayButtonContainer = styled("button")(({ theme }) => ({
+    backgroundColor: theme.palette.primary.main,
+    border: "none",
+    borderRadius: "50%",
+    width: "50px",
+    height: "50px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    cursor: "pointer",
+    boxShadow: "rgba(0, 0, 0, 0.3) 0px 8px 8px 0px",
+    "&:focus": {
+        outline: "none",
+    },
+}));
 
 export default PlayButton;

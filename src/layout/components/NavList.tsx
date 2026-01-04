@@ -4,6 +4,21 @@ import { Typography } from '@mui/material';
 import { styled } from '@mui/material';
 import { NavLink } from 'react-router';
 
+const NavList = () => {
+    return (
+        <StyledNavList>
+            <StyledNavLink to="/">
+                <HomeIcon />
+                <Typography variant="h2" fontWeight={700}>Home</Typography>
+            </StyledNavLink>
+            <StyledNavLink to="/search">
+                <SearchIcon />
+                <Typography variant="h2" fontWeight={700}>Search</Typography>
+            </StyledNavLink>
+        </StyledNavList>
+    )
+}
+
 export const StyledNavList = styled("ul")({
     listStyle: "none",
     padding: 0,
@@ -26,20 +41,5 @@ export const StyledNavLink = styled(NavLink)(({ theme }) => ({
         color: theme.palette.text.primary,
     },
 }));
-
-const NavList = () => {
-    return (
-        <StyledNavList>
-            <StyledNavLink to="/">
-                <HomeIcon />
-                <Typography variant="h2" fontWeight={700}>Home</Typography>
-            </StyledNavLink>
-            <StyledNavLink to="/search">
-                <SearchIcon />
-                <Typography variant="h2" fontWeight={700}>Search</Typography>
-            </StyledNavLink>
-        </StyledNavList>
-    )
-}
 
 export default NavList

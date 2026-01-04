@@ -1,51 +1,59 @@
 import { Box, Skeleton } from '@mui/material';
+import { styled } from '@mui/material';
 
 const CardSkeleton = () => {
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                minWidth: '160px',
-                width: '100%',
-                height: '100%',
-                padding: '12px',
-                borderRadius: '8px',
-            }}
-        >
-            <Box
-                sx={{
-                    width: '100%',
-                    maxWidth: '165px',
-                    aspectRatio: '1',
-                    marginBottom: '8px',
-                }}
-            >
-                <Skeleton
+        <StyledCardSkeleton>
+            <StyledImageContainer>
+                <StyledImageSkeleton
                     variant="rectangular"
                     width="100%"
                     height="100%"
-                    sx={{
-                        borderRadius: '8px',
-                    }}
                 />
-            </Box>
-            <Skeleton
+            </StyledImageContainer>
+            <StyledTextSkeleton
                 variant="text"
                 width="80%"
                 height={24}
-                sx={{ marginBottom: '4px' }}
             />
-            <Skeleton
+            <StyledTextSkeleton
                 variant="text"
                 width="60%"
                 height={20}
             />
-        </Box>
+        </StyledCardSkeleton>
     );
 };
+
+const StyledCardSkeleton = styled(Box)({
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+    minWidth: '160px',
+    width: '100%',
+    height: '100%',
+    padding: '12px',
+    borderRadius: '8px',
+});
+
+const StyledImageContainer = styled(Box)({
+    width: '100%',
+    maxWidth: '165px',
+    aspectRatio: '1',
+    marginBottom: '8px',
+});
+
+const StyledImageSkeleton = styled(Skeleton)({
+    borderRadius: '8px',
+});
+
+const StyledTextSkeleton = styled(Skeleton)({
+    marginBottom: '4px',
+    '&:last-of-type': {
+        marginBottom: 0,
+    },
+});
 
 export default CardSkeleton;
 

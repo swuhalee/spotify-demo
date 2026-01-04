@@ -1,5 +1,8 @@
-import { Avatar, Box, Typography, Button } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
+import { styled } from '@mui/material';
 import { TrackObject } from '../../../models/track';
+import { SquareAvatar } from '../../../common/styles/avatar.styles';
+import { EllipsisText } from '../../../common/styles/text.styles';
 
 interface SearchResultItemProps {
     track: TrackObject;
@@ -15,112 +18,99 @@ const SearchResultItem = ({ track }: SearchResultItemProps) => {
     };
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                padding: '8px 12px',
-                borderRadius: '8px',
-                transition: 'background-color 0.2s ease',
-                '&:hover': {
-                    backgroundColor: 'action.hover',
-                },
-            }}
-        >
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: '12px', flex: 1, minWidth: 0 }}>
-                <Avatar
+        <StyledSearchResultItem>
+            <StyledLeftSection>
+                <SquareAvatar
                     variant="square"
                     src={albumImage || undefined}
-                    sx={{
-                        width: 56,
-                        height: 56,
-                        backgroundColor: 'background.default',
-                        borderRadius: '4px',
-                        flexShrink: 0,
-                    }}
                 >
                     {!albumImage && (
-                        <Typography
-                            variant="caption"
-                            sx={{
-                                color: 'text.secondary',
-                                fontSize: '10px',
-                            }}
-                        >
+                        <Typography variant="caption" color="text.secondary" fontSize="10px">
                             No Image
                         </Typography>
                     )}
-                </Avatar>
-                <Box sx={{ minWidth: 0 }}>
-                    <Typography
-                        variant="body1"
-                        sx={{
-                            color: 'text.primary',
-                            fontWeight: 500,
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                        }}
-                    >
+                </SquareAvatar>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                    <StyledTrackName variant="body1">
                         {track.name || 'Unknown Track'}
-                    </Typography>
-                    <Typography
-                        variant="subtitle1"
-                        sx={{
-                            color: 'text.secondary',
-                            overflow: 'hidden',
-                            textOverflow: 'ellipsis',
-                            whiteSpace: 'nowrap',
-                        }}
-                    >
+                    </StyledTrackName>
+                    <StyledArtistName variant="subtitle1">
                         {artistNames}
-                    </Typography>
-                </Box>
-            </Box>
+                    </StyledArtistName>
+                </div>
+            </StyledLeftSection>
 
-            <Box 
-                sx={{ 
-                    flex: 1, 
-                    display: { xs: 'none', md: 'flex' },
-                    justifyContent: 'center',
-                }}
-            >
-                <Typography
-                    variant="subtitle1"
-                    sx={{
-                        color: 'text.secondary',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                        maxWidth: '200px',
-                    }}
-                >
+            <StyledAlbumNameContainer>
+                <StyledAlbumName variant="subtitle1">
                     {albumName}
-                </Typography>
-            </Box>
+                </StyledAlbumName>
+            </StyledAlbumNameContainer>
 
-            <Box sx={{ flexShrink: 0 }}>
-                <Button
+            <div style={{ flexShrink: 0 }}>
+                <StyledAddButton
                     variant="text"
                     color="primary"
                     onClick={handleAdd}
-                    sx={{
-                        borderRadius: '20px',
-                        textTransform: 'none',
-                        padding: '6px 16px',
-                        fontSize: '14px',
-                        minWidth: 'auto',
-                        '&:hover': {
-                            transform: 'scale(1.05)',
-                        },
-                    }}
                 >
                     Add
-                </Button>
-            </Box>
-        </Box>
+                </StyledAddButton>
+            </div>
+        </StyledSearchResultItem>
     )
 }
+
+const StyledSearchResultItem = styled(Box)(({ theme }) => ({
+    padding: '8px 12px',
+    borderRadius: '8px',
+    transition: 'background-color 0.2s ease',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    '&:hover': {
+        backgroundColor: theme.palette.action.hover,
+    },
+}));
+
+const StyledLeftSection = styled(Box)({
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    flex: 1,
+    minWidth: 0,
+});
+
+const StyledAlbumNameContainer = styled(Box)(({ theme }) => ({
+    flex: 1,
+    display: 'none',
+    justifyContent: 'center',
+    [theme.breakpoints.up('md')]: {
+        display: 'flex',
+    },
+}));
+
+const StyledAddButton = styled(Button)({
+    borderRadius: '20px',
+    textTransform: 'none',
+    padding: '6px 16px',
+    fontSize: '14px',
+    minWidth: 'auto',
+    '&:hover': {
+        transform: 'scale(1.05)',
+    },
+});
+
+const StyledTrackName = styled(EllipsisText)(({ theme }) => ({
+    color: theme.palette.text.primary,
+    fontWeight: 500,
+}));
+
+const StyledArtistName = styled(EllipsisText)(({ theme }) => ({
+    color: theme.palette.text.secondary,
+}));
+
+const StyledAlbumName = styled(EllipsisText)(({ theme }) => ({
+    color: theme.palette.text.secondary,
+    maxWidth: '200px',
+}));
 
 export default SearchResultItem

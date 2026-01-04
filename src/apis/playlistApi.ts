@@ -19,7 +19,7 @@ export const getPlaylist = async (params: GetPlaylistRequest): Promise<GetPlayli
         });
         return response.data;
     } catch (error) {
-        throw new Error('Failed to fetch playlist');
+        throw error;
     }
 }
 
@@ -30,7 +30,7 @@ export const getPlaylistItems = async (params: GetPlaylistItemsRequest): Promise
         });
         return response.data;
     } catch (error) {
-        throw new Error('Failed to fetch playlist items');
+        throw error;
     }
 }
 

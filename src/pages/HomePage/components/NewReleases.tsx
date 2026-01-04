@@ -8,7 +8,7 @@ const NewReleases = () => {
   const { data, isLoading, isError, error } = useGetNewReleases();
 
   return (
-    <div>
+    <>
       <Typography variant="h1" paddingTop="8px">New Released Albums</Typography>
       
       {isLoading && (
@@ -42,7 +42,7 @@ const NewReleases = () => {
           )}
         </>
       )}
-    </div>
+    </>
   )
 }
 

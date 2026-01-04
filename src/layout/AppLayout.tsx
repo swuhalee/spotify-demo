@@ -6,13 +6,35 @@ import NavList from './components/NavList';
 import { Box, styled } from '@mui/material';
 import Navbar from './components/Navbar';
 
-export const Layout = styled("div")({
+const AppLayout = () => {
+    return (
+        <StyledLayout>
+            <StyledSidebar>
+                <ContentBox>
+                    <NavList />
+                </ContentBox>
+                <ContentBox sx={{ display: "flex", flexDirection: "column", gap: "8px", overflow: "hidden" }}>
+                    <LibraryHead />
+                    <Library />
+                </ContentBox>
+            </StyledSidebar>
+            <ContentBox sx={{ marginLeft: '8px', display: 'flex', flexDirection: 'column' }}>
+                <Navbar />
+                <Box sx={{ flex: 1, overflow: 'hidden' }}>
+                    <Outlet />
+                </Box>
+            </ContentBox>
+        </StyledLayout>
+    )
+}
+
+export const StyledLayout = styled("div")({
     display: "flex",
     height: "100vh",
     padding: "8px",
 });
 
-export const Sidebar = styled("div")(({ theme }) => ({
+export const StyledSidebar = styled("div")(({ theme }) => ({
     minWidth: "240px",
     maxWidth: "331px",
     width: "clamp(240px, 20vw, 331px)", // clamp(최소값, 적당한값, 최대값)
@@ -23,27 +45,5 @@ export const Sidebar = styled("div")(({ theme }) => ({
         display: "none",
     },
 }));
-
-const AppLayout = () => {
-    return (
-        <Layout>
-            <Sidebar>
-                <ContentBox>
-                    <NavList />
-                </ContentBox>
-                <ContentBox sx={{ display: "flex", flexDirection: "column", gap: "8px", overflow: "hidden" }}>
-                    <LibraryHead />
-                    <Library />
-                </ContentBox>
-            </Sidebar>
-            <ContentBox sx={{ marginLeft: '8px', display: 'flex', flexDirection: 'column' }}>
-                <Navbar />
-                <Box sx={{ flex: 1, overflow: 'hidden' }}>
-                    <Outlet />
-                </Box>
-            </ContentBox>
-        </Layout>
-    )
-}
 
 export default AppLayout
