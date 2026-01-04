@@ -1,4 +1,3 @@
-import { Box } from "@mui/material";
 import useGetCurrentUserPlaylists from "../../hooks/useGetCurrentUserPlaylists";
 import EmptyPlaylist from "./EmptyPlaylist";
 import Playlist from "./Playlist";
@@ -26,12 +25,12 @@ const Library = () => {
         <>
             {!data || data?.pages[0].total === 0
                 ? <EmptyPlaylist />
-                : <Box sx={{ display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto', overflowX: 'hidden', minHeight: 0 }}>
+                : <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto', overflowX: 'hidden', minHeight: 0 }}>
                     {data?.pages.map((page, index) => (
                         <Playlist key={index} playlists={page.items} />
                     ))}
                     <div ref={ref} />
-                  </Box>
+                </div>
             }
         </>
     );

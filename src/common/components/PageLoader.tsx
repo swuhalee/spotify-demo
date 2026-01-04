@@ -1,19 +1,20 @@
 import { Box, CircularProgress } from '@mui/material';
+import { styled } from '@mui/material';
 
 const PageLoader = () => {
   return (
-    <Box
-      sx={{
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}
-    >
+    <StyledPageLoader>
       <CircularProgress size={60} />
-    </Box>
+    </StyledPageLoader>
   );
 };
+
+const StyledPageLoader = styled(Box)({
+  minHeight: '100vh',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+});
 
 export default PageLoader;
 

@@ -1,4 +1,5 @@
 import { Box, TextField, Typography, InputAdornment } from '@mui/material'
+import { styled } from '@mui/material'
 import SearchIcon from '@mui/icons-material/Search';
 import { useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
@@ -10,7 +11,7 @@ import SearchResultItemSkeleton from './SearchResultItemSkeleton';
 const EmptyPlaylistWithSearch = () => {
     const [keyword, setKeyword] = useState<string>('');
     const { ref, inView } = useInView();
-    const { data, error, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } = useSearchItemsByKeyword({
+    const { data, isLoading, hasNextPage, isFetchingNextPage, fetchNextPage } = useSearchItemsByKeyword({
         q: keyword,
         type: [SEARCH_TYPE.Track]
     });
@@ -28,18 +29,8 @@ const EmptyPlaylistWithSearch = () => {
     const allTracks = data?.pages.flatMap((page) => page.tracks?.items || []) || [];
 
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                height: '100%',
-                paddingTop: '12px',
-            }}
-        >
-            <Typography
-                variant="h1"
-                sx={{ paddingBottom: '12px' }}
-            >
+        <StyledContainer>
+            <Typography variant="h1" sx={{ paddingBottom: '12px' }}>
                 Let's find something for your playlist
             </Typography>
             <TextField
@@ -58,52 +49,57 @@ const EmptyPlaylistWithSearch = () => {
                 
             />
             {isLoading && keyword && (
-                <Box
-                    sx={{ padding: '12px' }}
-                >
+                <div style={{ padding: '12px' }}>
                     {[...Array(4)].map((_, index) => (
                         <SearchResultItemSkeleton key={index} />
                     ))}
-                </Box>
+                </div>
             )}
             {allTracks.length > 0 && (
-                <Box
-                    sx={{
-                        flex: 1,
-                        overflowY: 'auto',
-                        padding: '12px',
-                        '&::-webkit-scrollbar': {
-                            display: 'none',
-                        },
-                        scrollbarWidth: 'none',
-                        msOverflowStyle: 'none',
-                    }}
-                >
+                <StyledResultsContainer>
                     {allTracks.map((track, index) => (
                         <SearchResultItem
                             key={track.id || index}
                             track={track}
                         />
                     ))}
-                    <Box ref={ref} sx={{ height: '4px' }} />
+                    <div ref={ref} style={{ height: '4px' }} />
                     {isFetchingNextPage && (
-                        <Box sx={{ padding: '16px', textAlign: 'center' }}>
+                        <div style={{ padding: '16px', textAlign: 'center' }}>
                             <Typography variant="body1" sx={{ color: 'text.secondary' }}>
                                 Loading more...
                             </Typography>
-                        </Box>
+                        </div>
                     )}
-                </Box>
+                </StyledResultsContainer>
             )}
             {keyword && allTracks.length === 0 && !isLoading && (
-                <Box sx={{ padding: '24px', textAlign: 'center' }}>
+                <div style={{ padding: '24px', textAlign: 'center' }}>
                     <Typography variant="body1" sx={{ color: 'text.secondary' }}>
                         No results for "{keyword}"
                     </Typography>
-                </Box>
+                </div>
             )}
-        </Box>
+        </StyledContainer>
     )
 }
+
+const StyledContainer = styled(Box)({
+    display: 'flex',
+    flexDirection: 'column',
+    height: '100%',
+    paddingTop: '12px',
+});
+
+const StyledResultsContainer = styled(Box)({
+    flex: 1,
+    overflowY: 'auto',
+    padding: '12px',
+    '&::-webkit-scrollbar': {
+        display: 'none',
+    },
+    scrollbarWidth: 'none',
+    msOverflowStyle: 'none',
+});
 
 export default EmptyPlaylistWithSearch

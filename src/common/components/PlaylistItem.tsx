@@ -1,5 +1,7 @@
-import { Avatar, Box, Typography } from "@mui/material";
-import theme from "../../theme";
+import { Box, Typography } from "@mui/material";
+import { styled } from "@mui/material";
+import { SquareAvatar } from "../styles/avatar.styles";
+import { EllipsisText } from "../styles/text.styles";
 
 interface PlaylistItemProps {
     id: string;
@@ -12,72 +14,54 @@ interface PlaylistItemProps {
 
 const PlaylistItem = ({ id, name, artistName, imageUrl, handleClick, isSelected = false }: PlaylistItemProps) => {
     return (
-        <Box
-            sx={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                padding: '8px',
-                borderRadius: '4px',
-                cursor: 'pointer',
-                backgroundColor: isSelected ? theme.palette.action.active : "",
-                '&:hover': {
-                    backgroundColor: isSelected
-                        ? theme.palette.action.active
-                        : 'action.hover',
-                },
-            }}
+        <StyledPlaylistItem 
+            isSelected={isSelected}
             onClick={() => handleClick(id)}
         >
-            <Avatar
+            <SquareAvatar
                 variant="square"
                 src={imageUrl || undefined}
-                sx={{
-                    width: 48,
-                    height: 48,
-                    backgroundColor: 'background.paper',
-                    borderRadius: '4px',
-                }}
             >
                 {!imageUrl && (
-                    <Typography
-                        variant="caption"
-                        sx={{
-                            color: 'text.secondary',
-                            fontSize: '10px',
-                        }}
-                    >
+                    <Typography variant="caption" color="text.secondary" fontSize="10px">
                         NoImage
                     </Typography>
                 )}
-            </Avatar>
-            <Box sx={{ flex: 1, minWidth: 0 }}>
-                <Typography
-                    variant="body1"
-                    sx={{
-                        color: 'primary.main',
-                        fontWeight: 500,
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                    }}
-                >
+            </SquareAvatar>
+            <div style={{ flex: 1, minWidth: 0 }}>
+                <StyledName variant="body1">
                     {name}
-                </Typography>
-                <Typography
-                    variant="subtitle1"
-                    sx={{
-                        color: 'text.secondary',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        whiteSpace: 'nowrap',
-                    }}
-                >
+                </StyledName>
+                <StyledArtistName variant="subtitle1">
                     Playlist • {artistName}
-                </Typography>
-            </Box>
-        </Box>
+                </StyledArtistName>
+            </div>
+        </StyledPlaylistItem>
     );
 };
+
+const StyledPlaylistItem = styled(Box)<{ isSelected: boolean }>(({ theme, isSelected }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    gap: '12px',
+    padding: '8px',
+    borderRadius: '4px',
+    cursor: 'pointer',
+    backgroundColor: isSelected ? theme.palette.action.active : "",
+    '&:hover': {
+        backgroundColor: isSelected
+            ? theme.palette.action.active
+            : 'action.hover',
+    },
+}));
+
+const StyledName = styled(EllipsisText)(({ theme }) => ({
+    color: theme.palette.primary.main,
+    fontWeight: 500,
+}));
+
+const StyledArtistName = styled(EllipsisText)(({ theme }) => ({
+    color: theme.palette.text.secondary,
+}));
 
 export default PlaylistItem;
