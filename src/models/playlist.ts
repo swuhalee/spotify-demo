@@ -74,3 +74,12 @@ export interface CreatePlaylistRequest {
 export interface CreatePlaylistResponse extends BasePlaylist {
     tracks: ApiResponse<BasePlaylistTrackObject<TrackObject | EpisodeObject>>;
 }
+
+export interface AddItemsToPlaylistRequest {
+    uris: string[];
+    position?: number;
+}
+
+export interface AddItemsToPlaylistResponse {
+    snapshot_id: string;
+}

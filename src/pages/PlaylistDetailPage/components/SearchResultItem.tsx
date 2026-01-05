@@ -3,17 +3,23 @@ import { styled } from '@mui/material';
 import { TrackObject } from '../../../models/track';
 import { SquareAvatar } from '../../../common/styles/avatar.styles';
 import { EllipsisText } from '../../../common/styles/text.styles';
+import useAddItemsToPlaylist from '../../../hooks/useAddItemsToPlaylist';
+import { useParams } from 'react-router';
 
 interface SearchResultItemProps {
     track: TrackObject;
 }
 
 const SearchResultItem = ({ track }: SearchResultItemProps) => {
+    const { id } = useParams<{ id: string }>();
+    const { mutate: addItemsToPlaylist } = useAddItemsToPlaylist({uris: [track.uri]}, id);
+
     const artistNames = track.artists?.map(artist => artist.name).join(', ') || 'Unknown';
     const albumImage = track.album?.images?.[0]?.url || track.album?.images?.[track.album.images.length - 1]?.url;
     const albumName = track.album?.name || 'Unknown';
 
     const handleAdd = (e: React.MouseEvent) => {
+        addItemsToPlaylist();
         e.stopPropagation();
     };
 
