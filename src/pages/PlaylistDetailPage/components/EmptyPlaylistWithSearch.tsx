@@ -37,6 +37,11 @@ const EmptyPlaylistWithSearch = () => {
                 value={keyword}
                 onChange={handleSearchKeyword}
                 placeholder="Search for songs or episodes"
+                sx={{
+                    '& .MuiOutlinedInput-root': {
+                        borderRadius: '100px',
+                    },
+                }}
                 slotProps={{
                     input: {
                         startAdornment: (
@@ -46,7 +51,6 @@ const EmptyPlaylistWithSearch = () => {
                         ),
                     },
                 }}
-                
             />
             {isLoading && keyword && (
                 <div style={{ padding: '12px' }}>
