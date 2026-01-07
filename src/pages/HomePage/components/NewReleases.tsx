@@ -9,7 +9,7 @@ const NewReleases = () => {
 
   return (
     <>
-      <Typography variant="h1" paddingTop="8px">New Released Albums</Typography>
+      <Typography variant="h1" paddingTop="24px">New Released Albums</Typography>
       
       {isLoading && (
         <Grid container spacing={2} marginTop="8px">
