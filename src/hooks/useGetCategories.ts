@@ -1,12 +1,18 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { getCategories } from "../apis/categoryApi";
 import { GetCategoriesRequest } from "../models/category";
+import useClientCredentialToken from "./useClientCredentialToken";
 
 const useGetCategories = (params: GetCategoriesRequest) => {
+    const clientCredentialToken = useClientCredentialToken();
+
     return useInfiniteQuery({
         queryKey: ['categories', params],
         queryFn: ({ pageParam = 0 }) => {
-            return getCategories({ offset: pageParam, ...params });
+            if (!clientCredentialToken) {
+                throw new Error('Client credential token is undefined');
+            }
+            return getCategories(clientCredentialToken, { offset: pageParam, ...params });
         },
         initialPageParam: 0,
         getNextPageParam: (lastPage) => {
