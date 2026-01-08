@@ -1,7 +1,13 @@
-import { Box, Typography, styled } from '@mui/material';
+import { useState } from 'react';
+import { Box, Typography, styled, IconButton, Menu, MenuItem, Snackbar } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import { TrackObject } from '../../../models/track';
 import { SquareAvatar } from '../../../common/styles/avatar.styles';
 import { EllipsisText } from '../../../common/styles/text.styles';
+import useGetCurrentUserPlaylists from '../../../hooks/useGetCurrentUserPlaylists';
+import useAddItemsToPlaylist from '../../../hooks/useAddItemsToPlaylist';
+import useGetCurrentUserProfile from '../../../hooks/useGetCurrentUserProfile';
+import { SimplifiedPlaylistObject } from '../../../models/playlist';
 
 interface SongsProps {
   tracks: TrackObject[];
@@ -9,10 +15,44 @@ interface SongsProps {
 }
 
 const Songs = ({ tracks, onTrackClick }: SongsProps) => {
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const [selectedTrack, setSelectedTrack] = useState<TrackObject | null>(null);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+
+  const { data: userProfile } = useGetCurrentUserProfile();
+  const { data: playlistsData } = useGetCurrentUserPlaylists({ limit: 50, offset: 0 });
+  const playlists = playlistsData?.pages.flatMap(page => page.items) || [];
+
+  const { mutate: addItemsToPlaylist } = useAddItemsToPlaylist();
+
   const formatDuration = (ms: number) => {
     const minutes = Math.floor(ms / 60000);
     const seconds = Math.floor((ms % 60000) / 1000);
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  const handleAddButtonClick = (event: React.MouseEvent<HTMLElement>, track: TrackObject) => {
+    event.stopPropagation();
+    setSelectedTrack(track);
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setSelectedTrack(null);
+  };
+
+  const handlePlaylistSelect = (playlist: SimplifiedPlaylistObject) => {
+    if (selectedTrack) {
+      addItemsToPlaylist({
+        playlistId: playlist.id,
+        params: { uris: [selectedTrack.uri] }
+      });
+    }
+  };
+
+  const handleSnackbarClose = () => {
+    setSnackbarOpen(false);
   };
 
   return (
@@ -47,13 +87,64 @@ const Songs = ({ tracks, onTrackClick }: SongsProps) => {
                   </StyledArtistName>
                 </StyledTrackInfo>
               </StyledLeftSection>
-              <StyledDuration variant="body1">
-                {formatDuration(track.duration_ms || 0)}
-              </StyledDuration>
+              <StyledRightSection>
+                <StyledDuration variant="body1">
+                  {formatDuration(track.duration_ms || 0)}
+                </StyledDuration>
+                {userProfile && (
+                  <IconButton
+                    size="small"
+                    onClick={(e) => handleAddButtonClick(e, track)}
+                    sx={{ 
+                      color: 'text.secondary',
+                      '&:hover': { color: 'text.primary' }
+                    }}
+                  >
+                    <AddIcon fontSize="small" />
+                  </IconButton>
+                )}
+              </StyledRightSection>
             </StyledListItem>
           );
         })}
       </StyledList>
+      
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleMenuClose}
+        PaperProps={{
+          sx: {
+            maxHeight: 300,
+            width: 250,
+            backgroundColor: 'background.paper',
+          }
+        }}
+      >
+        {playlists.map((playlist) => (
+          <MenuItem
+            key={playlist.id}
+            onClick={() => handlePlaylistSelect(playlist)}
+            sx={{
+              '&:hover': {
+                backgroundColor: 'action.hover',
+              }
+            }}
+          >
+            <EllipsisText variant="body2">
+              {playlist.name}
+            </EllipsisText>
+          </MenuItem>
+        ))}
+      </Menu>
+
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+        message="Added to Playlist"
+        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+      />
     </StyledContainer>
   );
 };
@@ -105,9 +196,14 @@ const StyledArtistName = styled(EllipsisText)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+const StyledRightSection = styled(Box)({
+  display: 'flex',
+  alignItems: 'center',
+  gap: '8px',
+});
+
 const StyledDuration = styled(Typography)(({ theme }) => ({
   color: theme.palette.text.secondary,
-  marginRight: '8px',
 }));
 
 export default Songs;
