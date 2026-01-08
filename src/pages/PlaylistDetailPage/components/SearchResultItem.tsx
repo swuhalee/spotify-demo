@@ -11,16 +11,16 @@ interface SearchResultItemProps {
 }
 
 const SearchResultItem = ({ track }: SearchResultItemProps) => {
-    const { id } = useParams<{ id: string }>();
-    const { mutate: addItemsToPlaylist } = useAddItemsToPlaylist({uris: [track.uri]}, id);
+    const { id: playlistId } = useParams<{ id: string }>();
+    const { mutate: addItemsToPlaylist } = useAddItemsToPlaylist();
 
     const artistNames = track.artists?.map(artist => artist.name).join(', ') || 'Unknown';
     const albumImage = track.album?.images?.[0]?.url || track.album?.images?.[track.album.images.length - 1]?.url;
     const albumName = track.album?.name || 'Unknown';
 
     const handleAdd = (e: React.MouseEvent) => {
-        addItemsToPlaylist();
         e.stopPropagation();
+        addItemsToPlaylist({ playlistId: playlistId!, params: { uris: [track.uri] } });
     };
 
     return (
