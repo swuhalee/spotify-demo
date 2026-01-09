@@ -7,6 +7,7 @@ import { EllipsisText } from '../../../common/styles/text.styles';
 import useGetCurrentUserPlaylists from '../../../hooks/useGetCurrentUserPlaylists';
 import useAddItemsToPlaylist from '../../../hooks/useAddItemsToPlaylist';
 import useGetCurrentUserProfile from '../../../hooks/useGetCurrentUserProfile';
+import { getSpotifyAuthUrl } from '../../../utils/auth';
 import { SimplifiedPlaylistObject } from '../../../models/playlist';
 
 interface SongsProps {
@@ -33,6 +34,12 @@ const Songs = ({ tracks, onTrackClick }: SongsProps) => {
 
   const handleAddButtonClick = (event: React.MouseEvent<HTMLElement>, track: TrackObject) => {
     event.stopPropagation();
+    
+    if (!userProfile) {
+      getSpotifyAuthUrl();
+      return;
+    }
+    
     setSelectedTrack(track);
     setAnchorEl(event.currentTarget);
   };
@@ -91,18 +98,16 @@ const Songs = ({ tracks, onTrackClick }: SongsProps) => {
                 <StyledDuration variant="body1">
                   {formatDuration(track.duration_ms || 0)}
                 </StyledDuration>
-                {userProfile && (
-                  <IconButton
-                    size="small"
-                    onClick={(e) => handleAddButtonClick(e, track)}
-                    sx={{ 
-                      color: 'text.secondary',
-                      '&:hover': { color: 'text.primary' }
-                    }}
-                  >
-                    <AddIcon fontSize="small" />
-                  </IconButton>
-                )}
+                <IconButton
+                  size="small"
+                  onClick={(e) => handleAddButtonClick(e, track)}
+                  sx={{ 
+                    color: 'text.secondary',
+                    '&:hover': { color: 'text.primary' }
+                  }}
+                >
+                  <AddIcon fontSize="small" />
+                </IconButton>
               </StyledRightSection>
             </StyledListItem>
           );
