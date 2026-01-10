@@ -36,14 +36,14 @@ const SearchResultItem = ({ track }: SearchResultItemProps) => {
                         </Typography>
                     )}
                 </SquareAvatar>
-                <div style={{ flex: 1, minWidth: 0 }}>
+                <StyledTextContainer>
                     <StyledTrackName variant="body1">
                         {track.name || 'Unknown Track'}
                     </StyledTrackName>
                     <StyledArtistName variant="subtitle1">
                         {artistNames}
                     </StyledArtistName>
-                </div>
+                </StyledTextContainer>
             </StyledLeftSection>
 
             <StyledAlbumNameContainer>
@@ -86,11 +86,11 @@ const StyledLeftSection = styled(Box)({
 });
 
 const StyledAlbumNameContainer = styled(Box)(({ theme }) => ({
-    flex: 1,
     display: 'none',
     justifyContent: 'center',
     [theme.breakpoints.up('md')]: {
         display: 'flex',
+        flex: 1,
     },
 }));
 
@@ -117,6 +117,14 @@ const StyledArtistName = styled(EllipsisText)(({ theme }) => ({
 const StyledAlbumName = styled(EllipsisText)(({ theme }) => ({
     color: theme.palette.text.secondary,
     maxWidth: '200px',
+    
 }));
+
+const StyledTextContainer = styled(Box)({
+    flex: 1,
+    minWidth: 0,
+    width: 0,
+    overflow: 'hidden',
+});
 
 export default SearchResultItem

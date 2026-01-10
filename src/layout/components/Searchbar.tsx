@@ -34,9 +34,10 @@ const Searchbar = () => {
             sx={{
                 width: '100%',
                 maxWidth: '400px',
+                marginRight: '16px',
                 '& .MuiOutlinedInput-root': {
                     borderRadius: '100px',
-                    height: '50px',
+                    height: '48px',
                 },
             }}
             slotProps={{
