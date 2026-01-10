@@ -1,4 +1,4 @@
-import { Box, Typography, Avatar, styled } from '@mui/material';
+import { Box, Typography, Avatar, styled, Grid } from '@mui/material';
 import { Artist } from '../../../models/artist';
 import { EllipsisText } from '../../../common/styles/text.styles';
 
@@ -9,54 +9,36 @@ interface ArtistsProps {
 
 const Artists = ({ artists, onArtistClick }: ArtistsProps) => {
   return (
-    <StyledContainer>
-      <Typography variant="h1" fontWeight={700} sx={{ marginBottom: '16px' }}>
-        Artists
-      </Typography>
-      <StyledScrollContainer>
+    <>
+      <Typography variant="h1">Artists</Typography>
+      <Grid container spacing={2}>
         {artists.slice(0, 6).map((artist, index) => {
           const imageUrl = (artist as any).images?.[0]?.url;
 
           return (
-            <StyledArtistCard
-              key={artist.id || index}
-              onClick={() => onArtistClick?.(artist)}
-            >
-              <StyledAvatar src={imageUrl || undefined}>
-                {!imageUrl && (
-                  <Typography variant="caption" color="text.secondary">
-                    No Image
-                  </Typography>
-                )}
-              </StyledAvatar>
-              <StyledArtistName variant="h2" paddingTop="8px">
-                {artist.name || 'Unknown'}
-              </StyledArtistName>
-              <StyledType variant="body1" color="textSecondary">Artist</StyledType>
-            </StyledArtistCard>
+            <Grid key={artist.id || index} size={{ xs: 6, sm: 4, md: 2 }} paddingTop="16px">
+              <StyledArtistCard
+                onClick={() => onArtistClick?.(artist)}
+              >
+                <StyledAvatar src={imageUrl || undefined}>
+                  {!imageUrl && (
+                    <Typography variant="caption" color="text.secondary">
+                      No Image
+                    </Typography>
+                  )}
+                </StyledAvatar>
+                <StyledArtistName variant="h2" paddingTop="8px">
+                  {artist.name || 'Unknown'}
+                </StyledArtistName>
+                <StyledType variant="body1" color="textSecondary">Artist</StyledType>
+              </StyledArtistCard>
+            </Grid>
           );
         })}
-      </StyledScrollContainer>
-    </StyledContainer>
+      </Grid>
+    </>
   );
 };
-
-const StyledContainer = styled(Box)({
-  display: 'flex',
-  flexDirection: 'column',
-});
-
-const StyledScrollContainer = styled(Box)({
-  display: 'flex',
-  gap: '16px',
-  overflowX: 'auto',
-  paddingBottom: '8px',
-  '&::-webkit-scrollbar': {
-    display: 'none',
-  },
-  scrollbarWidth: 'none',
-  msOverflowStyle: 'none',
-});
 
 const StyledArtistCard = styled(Box)(({ theme }) => ({
   display: 'flex',

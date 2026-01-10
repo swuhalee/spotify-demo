@@ -92,6 +92,9 @@ const StyledContainer = styled(Box)({
     display: 'flex',
     flexDirection: 'column',
     height: '100%',
+    minWidth: 0,
+    width: '100%',
+    overflow: 'hidden',
     paddingTop: '12px',
 });
 

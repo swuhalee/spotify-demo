@@ -105,9 +105,9 @@ const Navbar = () => {
 
 const StyledNavbar = styled(Box)<{ isSearchPage: boolean }>(({ isSearchPage }) => ({
   display: "flex",
-  alignItems: "center",
+  alignItems: "start",
   justifyContent: isSearchPage ? "space-between" : "flex-end",
-  height: "64px",
+  // height: "64px",
   width: "100%",
 }));
 

@@ -1,4 +1,4 @@
-import { Box, Typography, styled } from '@mui/material';
+import { Box, Grid, Typography, styled } from '@mui/material';
 import { SimplifiedAlbumObject } from '../../../models/album';
 import Card from '../../../common/components/Card';
 
@@ -9,11 +9,10 @@ interface AlbumsProps {
 
 const Albums = ({ albums, onAlbumClick }: AlbumsProps) => {
   return (
-    <StyledContainer>
-      <Typography variant="h1" fontWeight={700} sx={{ marginBottom: '16px' }}>
-        Albums
-      </Typography>
-      <StyledScrollContainer>
+    <>
+      <Typography variant="h1">Albums</Typography>
+
+      <Grid container spacing={2}>
         {albums.slice(0, 6).map((album, index) => {
           const imageUrl = album.images?.[0]?.url || album.images?.[album.images.length - 1]?.url;
           const artistNames = album.artists?.map(artist => artist.name).filter((name): name is string => Boolean(name));
@@ -31,27 +30,10 @@ const Albums = ({ albums, onAlbumClick }: AlbumsProps) => {
             </StyledAlbumCard>
           );
         })}
-      </StyledScrollContainer>
-    </StyledContainer>
+      </Grid>
+    </>
   );
 };
-
-const StyledContainer = styled(Box)({
-  display: 'flex',
-  flexDirection: 'column',
-});
-
-const StyledScrollContainer = styled(Box)({
-  display: 'flex',
-  gap: '16px',
-  overflowX: 'auto',
-  paddingBottom: '8px',
-  '&::-webkit-scrollbar': {
-    display: 'none',
-  },
-  scrollbarWidth: 'none',
-  msOverflowStyle: 'none',
-});
 
 const StyledAlbumCard = styled(Box)({
   minWidth: '180px',
